@@ -1,0 +1,14 @@
+[flake8]
+extend-ignore = E501
+exclude =
+    migrations,
+    __pycache__,
+    ./manage.py,
+    ./django_intmd/asgi.py,
+    ./django_intmd/wsgi.py,
+    ./django_intmd/settings/*,
+    ./matching_app/models/__init__.py
+    .venv,
+    venv,
+    .env,
+    env

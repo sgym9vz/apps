@@ -1,0 +1,89 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    restart: always
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - dev-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "mysql"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - app-network
+
+  mysql-cli:
+    image: mysql:8.4
+    command: mysql -hmysql -uapp -ppassword app
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7.4
+    restart: always
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - app-network
+
+  redis-cli:
+    image: redis:7.4
+    command: redis-cli -h redis
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  django:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/django_intmd
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=app
+      - DB_USER=app
+      - DB_PASS=password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: ["/etc/scripts/deployments/run_gunicorn.sh"]
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+
+volumes:
+  dev-data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sports-webapi-go – API ドキュメント & デモ</title>
+  <style>
+    body{font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height:1.5; margin:2rem; max-width: 960px;}
+    h1{margin-bottom:0.25rem}
+    .muted{color:#666}
+    input,select{padding:.4rem; font-size:14px}
+    button{padding:.5rem .8rem; cursor:pointer}
+    .row{display:flex; gap:1rem; flex-wrap:wrap; align-items:center}
+    .card{border:1px solid #ddd; border-radius:8px; padding:1rem; margin:1rem 0}
+    pre{background:#0b1021; color:#e3f2fd; padding:1rem; border-radius:8px; overflow:auto}
+    code{background:#f6f8fa; padding:.2rem .35rem; border-radius:4px}
+    .grid{display:grid; grid-template-columns: 1fr 1fr; gap:1rem}
+    @media (max-width: 800px){ .grid{grid-template-columns: 1fr} }
+    .small{font-size:12px}
+    .ok{color:#2e7d32} .err{color:#c62828}
+  </style>
+</head>
+<body>
+  <h1>sports-webapi-go</h1>
+  <div class="muted">サッカー（フットボール）のチーム/選手データを返す読み取り中心の Web API（Go + net/http）</div>
+
+  <div class="card">
+    <b>使い方（最短）</b>
+    <ol>
+      <li><code>go run ./cmd/api</code> を実行（デフォルトで <code>:8000</code>）</li>
+      <li>このページを <code>http://localhost:8000/docs/</code> で開く</li>
+      <li>下のフォームでエンドポイントとクエリを選び「Try」を押す</li>
+    </ol>
+    <div class="small">CORSはGET/OPTIONSに対して<code>*</code>で許可済み。ローカルHTMLからのfetchも可。</div>
+  </div>
+
+  <div class="card grid">
+    <div>
+      <h3>エンドポイント一覧</h3>
+      <ul>
+        <li><code>GET /health</code> … サーバの稼働確認</li>
+        <li><code>GET /api/teams</code> … 一覧（検索<code>q</code>、フィルタ<code>league,country,min_rating</code>、ソート<code>name|rating|founded</code>、ページング）</li>
+        <li><code>GET /api/teams/{id}</code> … 詳細</li>
+        <li><code>GET /api/players</code> … 一覧（検索<code>q</code>、フィルタ<code>team_id,position,nationality,min_rating,max_age</code>、ソート<code>name|rating|age|value</code>、ページング）</li>
+        <li><code>GET /api/players/{id}</code> … 詳細</li>
+        <li><code>GET /api/stats/summary</code> … 集計（件数、平均、上位）</li>
+      </ul>
+      <div class="small">ソートは<code>sort=key</code>で昇順、<code>sort=-key</code>で降順。<br>ページングは<code>page</code>/<code>per_page</code>（上限100）。</div>
+    </div>
+    <div>
+      <h3>ステータスとエラー</h3>
+      <ul>
+        <li><b>200</b> 正常</li>
+        <li><b>400</b> 不正なクエリ（例：未知のソートキー）</li>
+        <li><b>404</b> 見つからない（存在しないIDなど）</li>
+      </ul>
+      <div class="small">エラーJSONは <code>{"error":"説明","field":"対象フィールド"}</code>。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Try it</h3>
+    <div class="row">
+      <label>Base: <input id="base" size="40" value="http://localhost:8000"></label>
+      <label>Endpoint:
+        <select id="ep">
+          <option>/health</option>
+          <option>/api/players</option>
+          <option>/api/players/{id}</option>
+          <option>/api/teams</option>
+          <option>/api/teams/{id}</option>
+          <option>/api/stats/summary</option>
+        </select>
+      </label>
+      <label id="idwrap" style="display:none">ID: <input id="idval" type="number" value="1" min="1" style="width:6rem"></label>
+    </div>
+
+    <div id="query" class="row" style="margin-top:.5rem"></div>
+
+    <div class="row" style="margin-top:.5rem">
+      <button id="go">Try</button>
+      <button id="copy">Copy curl</button>
+      <span id="st" class="small"></span>
+    </div>
+
+    <pre id="out">結果がここに表示されます</pre>
+  </div>
+
+  <script>
+  const ep = document.getElementById('ep');
+  const idwrap = document.getElementById('idwrap');
+  const idval = document.getElementById('idval');
+  const q = document.getElementById('query');
+  const out = document.getElementById('out');
+  const st = document.getElementById('st');
+
+  const forms = {
+    "/api/players": [
+      ["q","text",""],
+      ["team_id","number",""],
+      ["position","text",""],
+      ["nationality","text",""],
+      ["min_rating","number",""],
+      ["max_age","number",""],
+      ["sort","text","-rating"],
+      ["page","number","1"],
+      ["per_page","number","20"]
+    ],
+    "/api/teams": [
+      ["q","text",""],
+      ["league","text",""],
+      ["country","text",""],
+      ["min_rating","number",""],
+      ["sort","text","-rating"],
+      ["page","number","1"],
+      ["per_page","number","20"]
+    ],
+    "/api/stats/summary": [],
+    "/health": []
+  };
+
+  function renderQuery() {
+    q.innerHTML = "";
+    const path = ep.value.replace("{id}","");
+    idwrap.style.display = ep.value.includes("{id}") ? "" : "none";
+    (forms[path]||[]).forEach(([name,type,def]) => {
+      const lbl = document.createElement('label');
+      const input = document.createElement('input');
+      input.type = type; input.value = def; input.dataset.key = name;
+      input.placeholder = name;
+      lbl.textContent = name + ": ";
+      lbl.appendChild(input);
+      q.appendChild(lbl);
+    });
+  }
+  ep.onchange = renderQuery; renderQuery();
+
+  function buildURL() {
+    const base = document.getElementById('base').value.replace(/\/$/,'');
+    let path = ep.value;
+    if (path.includes("{id}")) path = path.replace("{id}", idval.value || "1");
+    const params = [];
+    q.querySelectorAll('input').forEach(i => {
+      const k = i.dataset.key, v = i.value.trim();
+      if (!k || v === "") return;
+      params.push(encodeURIComponent(k)+"="+encodeURIComponent(v));
+    });
+    return base + path + (params.length ? "?" + params.join("&") : "");
+  }
+
+  async function run() {
+    const url = buildURL();
+    st.textContent = "→ " + url;
+    try {
+      const res = await fetch(url);
+      const txt = await res.text();
+      out.textContent = res.status+" "+res.statusText+"\n"+txt;
+      st.className = res.ok ? "small ok" : "small err";
+    } catch (e) {
+      out.textContent = "ERROR: " + e;
+      st.className = "small err";
+    }
+  }
+  document.getElementById('go').onclick = run;
+
+  document.getElementById('copy').onclick = () => {
+    const url = buildURL();
+    const cmd = `curl -s "${url}" | jq .`;
+    navigator.clipboard.writeText(cmd);
+    st.textContent = "copied: " + cmd;
+  };
+  </script>
+</body>
+</html>

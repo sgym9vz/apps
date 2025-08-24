@@ -1,0 +1,23 @@
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Git
+.git
+.gitignore
+README.md
+
+# Python
+appserver/__pycache__/
+appserver/*/__pycache__/
+appserver/*/*/__pycache__/
+
+# Environments
+.env/
+.venv/
+venv/
+
+# Others
+Makefile
+.flake8
+.isort.cfg

@@ -1,0 +1,6 @@
+# build
+sports-api
+
+# IDE / OS
+.vscode/
+.DS_Store
