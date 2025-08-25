@@ -1,0 +1,552 @@
+[
+    {
+        "model": "matching_app.recruitment",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 10,
+            "title": "game",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 27,
+            "title": "event",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 36,
+            "title": "event",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 4,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 48,
+            "title": "other",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 5,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 37,
+            "title": "other",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 6,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 33,
+            "title": "hobby",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 7,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 9,
+            "title": "event",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 8,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 48,
+            "title": "party",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 9,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 27,
+            "title": "game",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 10,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 35,
+            "title": "hobby",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 11,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 6,
+            "title": "hobby",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 12,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 41,
+            "title": "event",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 13,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 25,
+            "title": "event",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 14,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 46,
+            "title": "game",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 15,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 38,
+            "title": "hobby",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 16,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 24,
+            "title": "other",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 17,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 33,
+            "title": "party",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 18,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 13,
+            "title": "other",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 19,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 26,
+            "title": "study",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 20,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 27,
+            "title": "game",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 21,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 49,
+            "title": "game",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 22,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 40,
+            "title": "party",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 23,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 46,
+            "title": "party",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 24,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 8,
+            "title": "study",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 25,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 48,
+            "title": "game",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 26,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 39,
+            "title": "game",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 27,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 2,
+            "title": "study",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 28,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 9,
+            "title": "party",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 29,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 18,
+            "title": "party",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 30,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 25,
+            "title": "study",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 31,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 44,
+            "title": "party",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 32,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 23,
+            "title": "party",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 33,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 15,
+            "title": "game",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 34,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 33,
+            "title": "other",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 35,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 32,
+            "title": "study",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 36,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 2,
+            "title": "party",
+            "content": "We can enjoy together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 37,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 29,
+            "title": "other",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 38,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 19,
+            "title": "study",
+            "content": "I want to play something!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 39,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 18,
+            "title": "party",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 40,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 3,
+            "title": "party",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 41,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 15,
+            "title": "party",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 42,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 1,
+            "title": "event",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 43,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 13,
+            "title": "other",
+            "content": "I want to do other things!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 44,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 15,
+            "title": "study",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 45,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 46,
+            "title": "other",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 46,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 7,
+            "title": "party",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 47,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 4,
+            "title": "study",
+            "content": "I want to learn something new!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 48,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 25,
+            "title": "hobby",
+            "content": "Let's have fun together!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 49,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 39,
+            "title": "other",
+            "content": "I want have a good time!"
+        }
+    },
+    {
+        "model": "matching_app.recruitment",
+        "pk": 50,
+        "fields": {
+            "created_at": "2025-01-01 00:00:00",
+            "updated_at": "2025-01-01 00:00:00",
+            "user": 5,
+            "title": "event",
+            "content": "I want to play something!"
+        }
+    }
+]

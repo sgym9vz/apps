@@ -1,0 +1,201 @@
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form-group .icon-input {
+    border: 2px dashed #ddd;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.form-group .icon-input:hover,
+.form-group .icon-input:focus {
+    border-color: #007bff;
+    background-color: #f0f7ff;
+}
+
+.current-icon-container {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.current-icon-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.current-icon-link {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.current-icon-link:hover {
+    text-decoration: underline;
+}
+
+.current-icon-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #f0f0f0;
+    margin-right: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.clear-checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.clear-checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin: 0 5px 0 0;
+    padding: 0;
+}
+
+.clear-checkbox-container label {
+    display: inline;
+    font-weight: normal;
+    color: #666;
+    cursor: pointer;
+}
+
+.change-icon-label {
+    font-weight: bold;
+    margin: 15px 0 5px;
+    color: #555;
+    text-align: left;
+}
+
+.icon-preview-container {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    animation: fadeIn 0.3s ease;
+}
+
+.icon-preview-image {
+    transition: all 0.3s ease;
+}
+
+.preview-label {
+    font-weight: 600;
+    margin-top: 8px;
+    color: #007bff;
+}
+
+.current-icon-message {
+    color: #dc3545;
+    font-size: 0.8em;
+    margin-top: 5px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.date-selects {
+    display: flex;
+    gap: 10px;
+}
+
+.date-selects select {
+    flex: 1;
+}
+
+.errorlist {
+    color: #dc3545;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+    font-size: 0.9em;
+}
+
+.date-select-row {
+    display: flex;
+    gap: 10px;
+}
+
+.date-select-row select {
+    flex: 1;
+    min-width: 80px;
+}
+
+.auth-form {
+    margin-bottom: 30px;
+}
+
+.auth-form .form-group {
+    margin-bottom: 25px;
+}
+
+.auth-form .form-group label {
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+
+.auth-form .form-group input,
+.auth-form .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.auth-form .form-group input:focus,
+.auth-form .form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.auth-submit:hover {
+    background: #0056b3;
+} 

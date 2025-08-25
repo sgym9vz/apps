@@ -1,0 +1,58 @@
+{% extends "base_menu.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <div class="home-container">
+        <h1>User Home</h1>
+
+        <div class="profile-section">
+            {% if user.icon %}
+                <img src="{{ user.icon.url }}" alt="Icon" class="profile-image">
+            {% else %}
+                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon" class="profile-image">
+            {% endif %}
+
+            <div class="profile-details">
+                <p class="profile-row">
+                    <strong class="profile-label">UserName</strong>
+                    <span class="profile-value">{{ user.username }}</span>
+                </p>
+                <p class="profile-row">
+                    <strong class="profile-label">E-Mail</strong>
+                    <span class="profile-value">{{ user.email }}</span>
+                </p>
+                <p class="profile-row">
+                    <strong class="profile-label">Age</strong>
+                    <span class="profile-value">{{ user_profile.age }}</span>
+                </p>
+                <p class="profile-row">
+                    <strong class="profile-label">Address</strong>
+                    <span class="profile-value">{{ user_profile.address }}</span>
+                </p>
+                <p class="profile-row">
+                    <strong class="profile-label">Occupation</strong>
+                    <span class="profile-value">{{ user_profile.occupation }}</span>
+                </p>
+                <p class="profile-row">
+                    <strong class="profile-label">Biography</strong>
+                    <span class="profile-value">{{ user_profile.biography }}</span>
+                </p>
+            </div>
+
+            <div class="profile-actions">
+                <form method="get" action="{% url 'user_profile_update' %}">
+                    <button type="submit" class="submit-button">Edit Profile</button>
+                </form>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-alert">Logout</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

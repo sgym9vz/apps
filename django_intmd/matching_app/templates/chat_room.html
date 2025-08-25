@@ -1,0 +1,106 @@
+{% extends "base_menu.html" %}
+{% load static %}
+
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <button class="btn-back" onclick="history.back()">
+        Back
+    </button>
+
+    <div class="chat-page-container">
+        <div class="chat-header">
+            {% if opposite_user.icon %}
+                <img src="{{ opposite_user.icon.url }}" alt="{{ opposite_user.username }}" class="chat-header-avatar">
+            {% else %}
+                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="{{ opposite_user.username }}" class="chat-header-avatar">
+            {% endif %}
+            <h2 class="chat-header-username">{{ opposite_user.username }}</h2>
+        </div>
+
+        <div id="chat-messages" class="chat-messages-container">
+            <!-- Messages will be added here dynamically -->
+        </div>
+
+        <div class="chat-input-area">
+            <input id="chat-message-input" type="text" class="chat-message-input" placeholder="Type a message...">
+            <button id="chat-message-submit" class="chat-send-button">Send</button>
+        </div>
+    </div>
+
+    {{ room.id|json_script:"room-id" }}
+    {{ user.id|json_script:"user-id" }}
+    {{ opposite_user.username|json_script:"opposite-username" }}
+    {{ user.username|json_script:"current-username" }}
+
+    <script>
+        const roomId = JSON.parse(document.getElementById('room-id').textContent);
+        const userId = JSON.parse(document.getElementById('user-id').textContent);
+        const oppositeUsername = JSON.parse(document.getElementById('opposite-username').textContent);
+        const currentUsername = JSON.parse(document.getElementById('current-username').textContent);
+        const chatMessagesContainer = document.getElementById('chat-messages');
+        
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomId
+            + '/'
+        );
+
+        chatSocket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            addMessageToChat(data.sender, data.message, data.created_at);
+            
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        };
+
+        function addMessageToChat(sender, message, timestamp) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message ' + (sender === currentUsername ? 'sent' : 'received');
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'chat-message-content';
+            messageContent.textContent = message;
+            
+            const messageTime = document.createElement('div');
+            messageTime.className = 'chat-message-time';
+            messageTime.textContent = timestamp;
+            
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(messageTime);
+            
+            chatMessagesContainer.appendChild(messageDiv);
+        }
+
+        chatSocket.onclose = function(event) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(event) {
+            if (event.keyCode === 13) {
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(event) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            
+            if (message.trim() === '') return;
+
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'room_id': roomId,
+                'sender_id': userId
+            }));
+
+            messageInputDom.value = '';
+        };
+        
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    </script>
+</div>
+{% endblock %}

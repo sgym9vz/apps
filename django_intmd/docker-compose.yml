@@ -72,12 +72,50 @@ services:
       - DB_PASS=password
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    command: ["/etc/scripts/deployments/run_gunicorn.sh"]
+    command: sh /etc/scripts/deployments/run_gunicorn.sh
     depends_on:
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - app-network
+
+  channels:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/django_intmd
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=app
+      - DB_USER=app
+      - DB_PASS=password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: sh /etc/scripts/deployments/run_daphne.sh
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:8080"
+    depends_on:
+      django:
+        condition: service_started
+      channels:
+        condition: service_started
     networks:
       - app-network
 

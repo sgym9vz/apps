@@ -1,0 +1,46 @@
+{% extends "base_menu.html" %}
+
+{% block title %}Search Recruitment{% endblock %}
+
+{% block content %}
+<button class="back" onclick="history.back()">
+    Back
+</button>
+
+<div class="recruitment-search">
+    <div class="centered-container">
+        <h1>Search Recruitment</h1>
+
+        {% if form.non_field_errors %}
+            <div class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <p><strong>{{ error }}</strong></p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form id="recruitment-search-form" action="{% url 'recruitment_search' %}" method="post">
+            {% csrf_token %}
+            {% if form %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="recruitment-actions">
+                <button type="submit" class="submit-button">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

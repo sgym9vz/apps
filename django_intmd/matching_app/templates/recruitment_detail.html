@@ -1,0 +1,68 @@
+{% extends "base_menu.html" %}
+{% load static %}
+
+{% block title %}Recruitment Detail{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <button class="back" onclick="history.back()">
+        Back
+    </button>
+
+    <div class="recruitment-detail">
+        
+        <div class="recruitment-meta">
+            <a href="{% url 'user_profile_detail' pk=recruitment.user.id %}">
+                {% if recruitment.user.icon %}
+                    <img src="{{ recruitment.user.icon.url }}" alt="Icon" class="recruitment-image">
+                {% else %}
+                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon" class="recruitment-image">
+                {% endif %}
+            </a>
+            <a href="{% url 'user_profile_detail' pk=recruitment.user.id %}">{{ recruitment.user.username }}</a>
+        </div>
+        
+        <p>{{ recruitment.created_at }}</p>
+        <h2>{{ recruitment.title }}</h2>
+        <br>
+        <p>{{ recruitment.content }}</p>
+    </div>
+
+    <div class="recruitment-actions">
+        {% if recruitment.user == user %}
+            <form method="get" action="{% url 'recruitment_update' recruitment.pk %}">
+                <button class="submit-button">Edit Recruitment</button>
+            </form>
+            <button class="btn-alert" id="delete-button" data-url="{% url 'recruitment_delete' recruitment.pk %}">
+                Delete Recruitment
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('delete-button').addEventListener('click', function () {
+        const deleteUrl = this.getAttribute('data-url');
+        if (confirm("Are you sure to delete?")) {
+            fetch(deleteUrl, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "{% url 'recruitment_timeline' %}";
+                } else {
+                    alert("Failed to delete the recruitment.");
+                }
+            })
+            .catch(error => {
+                alert("Failed to delete the recruitment.");
+                console.error('Error:', error);
+            });
+        }
+    });
+</script>
+{% endblock %}

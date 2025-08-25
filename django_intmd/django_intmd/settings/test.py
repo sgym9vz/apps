@@ -1,6 +1,5 @@
 from django_intmd.settings.base import *
 
-
 logger = structlog.get_logger(__name__)
 
 DATABASES = {

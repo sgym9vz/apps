@@ -1,0 +1,128 @@
+{% extends "base_menu.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <button class="back" onclick="history.back()">
+        Back
+    </button>
+
+    <h1>Edit Profile</h1>
+
+    <form action="{% url 'user_profile_update' %}" method="post" enctype="multipart/form-data" class="auth-form">
+        {% csrf_token %}
+
+        {% if user_profile_form.non_field_errors %}
+            <div class="errorlist">
+                {% for error in user_profile_form.non_field_errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if user_form.non_field_errors %}
+            <div class="errorlist">
+                {% for error in user_form.non_field_errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="profile-info-detail">
+            <div class="profile-info-item">
+                <span class="profile-info-label">E-Mail:</span>
+                <span class="profile-info-value">{{ user.email }}</span>
+            </div>
+            <div class="profile-info-item">
+                <span class="profile-info-label">Age:</span>
+                <span class="profile-info-value">{{ user_profile.age }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="username">UserName</label>
+            {{ user_form.username }}
+            {% if user_form.username.errors %}
+                <div class="errorlist">
+                    {% for error in user_form.username.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="icon">Icon</label>
+            
+            {% if user.icon %}
+            <div class="current-icon-container">
+                <span class="current-icon-label">Currently:</span>
+                <a href="{{ user.icon.url }}" class="current-icon-link" target="_blank">
+                    <img src="{{ user.icon.url }}" alt="Current icon" class="current-icon-preview">
+                </a>
+                
+                <div class="clear-checkbox-container">
+                    <input type="checkbox" name="icon-clear" id="icon-clear_id">
+                    <label for="icon-clear_id">Clear</label>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="change-icon-label">{% if user.icon %}Change:{% else %}Upload:{% endif %}</div>
+            {{ user_form.icon }}
+            
+            {% if user_form.icon.errors %}
+                <div class="errorlist">
+                    {% for error in user_form.icon.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            {{ user_profile_form.address }}
+            {% if user_profile_form.address.errors %}
+                <div class="errorlist">
+                    {% for error in user_profile_form.address.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="occupation">Occupation</label>
+            {{ user_profile_form.occupation }}
+            {% if user_profile_form.occupation.errors %}
+                <div class="errorlist">
+                    {% for error in user_profile_form.occupation.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="biography">Biography</label>
+            {{ user_profile_form.biography }}
+            {% if user_profile_form.biography.errors %}
+                <div class="errorlist">
+                    {% for error in user_profile_form.biography.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-actions">
+            <button type="submit" class="submit-button">Submit</button>
+            <form method="get" action="{% url 'user_home' %}">
+                <button type="submit" class="btn-back">Back to Home</button>
+            </form>
+        </div>
+    </form>
+</div>
+{% endblock %}

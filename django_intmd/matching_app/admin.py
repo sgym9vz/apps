@@ -1,3 +1,5 @@
-from django.contrib import admin
+from django.contrib import admin  # noqa
 
-# Register your models here.
+from matching_app.models import User
+
+admin.site.register(User)

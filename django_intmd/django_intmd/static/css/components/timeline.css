@@ -1,0 +1,48 @@
+/* Timeline Components */
+.timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.timeline-item {
+    background: #f8f9fa;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.timeline-item h2 {
+    margin: 0 0 10px 0;
+}
+
+.timeline-item h2 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.timeline-item h2 a:hover {
+    color: #007bff;
+}
+
+.timeline-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.timeline-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.action-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+} 

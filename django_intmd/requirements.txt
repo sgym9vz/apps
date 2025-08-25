@@ -2,6 +2,10 @@ Django==5.1
 gunicorn==23.0.0
 django-environ==0.11.0
 mysqlclient==2.2.4
-isort
 structlog==24.4.0
 django-structlog==8.1.0
+Pillow==11.0.0
+daphne==4.1.2
+channels==4.2.0
+channels-redis==4.2.0
+django-cors-headers==4.6.0

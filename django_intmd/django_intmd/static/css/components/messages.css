@@ -1,0 +1,23 @@
+/* Messages */
+.empty-message {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+/* Error Messages */
+.error-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.error-title {
+    color: #dc3545;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    color: #666;
+    margin-bottom: 30px;
+} 

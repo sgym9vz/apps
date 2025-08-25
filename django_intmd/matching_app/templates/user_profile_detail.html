@@ -1,0 +1,100 @@
+{% extends "base_menu.html" %}
+{% load static %}
+
+{% block title %}Profile Detail{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <button class="back" onclick="history.back()">
+        Back
+    </button>
+
+    <h1>User Profile</h1>
+
+    <div class="profile-section">
+        <div class="profile-header">
+            {% if user.icon %}
+                <img src="{{ user.icon.url }}" alt="Icon" class="profile-large-icon">
+            {% else %}
+                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon" class="profile-large-icon">
+            {% endif %}
+            <h2>{{ user.username }}</h2>
+        </div>
+
+        <div class="profile-info">
+            <div class="profile-info-item">
+                <span class="profile-info-label">Age</span>
+                <span class="profile-info-value">{{ user.userprofile.age }}</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="profile-info-label">Occupation</span>
+                <span class="profile-info-value">{{ user.userprofile.occupation }}</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="profile-info-label">Biography</span>
+                <span class="profile-info-value">{{ user.userprofile.biography }}</span>
+            </div>
+
+            <div class="profile-actions">
+                <form action="{% url 'chat_room_create' user.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-primary">Message</button>
+                </form>
+
+                <button id="like-button"
+                    class="btn-like {% if is_like %}liked{% endif %}"
+                    data-user-id="{{ user.id }}"
+                    data-update-url="{% url 'user_like_toggle' receiver_id=user.id %}">
+                    {% if is_like %}
+                    Unlike
+                    {% else %}
+                    Like
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButton = document.getElementById('like-button');
+        
+        likeButton.addEventListener('click', function() {
+            likeButton.disabled = true;
+            
+            fetch(likeButton.getAttribute('data-update-url'), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.like_status === 'liked') {
+                    likeButton.classList.add('liked');
+                    likeButton.textContent = 'Unlike';
+                } else if (data.like_status === 'unliked') {
+                    likeButton.classList.remove('liked');
+                    likeButton.textContent = 'Like';
+                }
+            })
+            .catch(error => {
+                alert(`Failed to update like status: ${error.message}`);
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                likeButton.disabled = false;
+            });
+        });
+    });
+</script>
+{% endblock %}

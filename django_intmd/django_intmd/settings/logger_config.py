@@ -12,20 +12,20 @@ class LoggerConfig:
 
     structlog.configure(
         processors=[
-            structlog.stdlib.add_log_level, # ログレベルを追加
-            structlog.stdlib.add_logger_name, # ロガー名を追加
-            structlog.stdlib.PositionalArgumentsFormatter(), # 位置引数をフォーマット
-            structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M.%S", utc=False), # タイムスタンプを追加
-            structlog.processors.StackInfoRenderer(), # スタック情報を追加
-            structlog.processors.UnicodeDecoder(), # ユニコードをデコード
-            structlog.processors.CallsiteParameterAdder( # 呼び出し元のファイル名、行番号、関数名を追加
+            structlog.stdlib.add_log_level,
+            structlog.stdlib.add_logger_name,
+            structlog.stdlib.PositionalArgumentsFormatter(),
+            structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M.%S", utc=False),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.UnicodeDecoder(),
+            structlog.processors.CallsiteParameterAdder(
                 parameters={
                     CallsiteParameter.FILENAME: True,
                     CallsiteParameter.LINENO: True,
                     CallsiteParameter.FUNC_NAME: True,
                 }
             ),
-            structlog.stdlib.ProcessorFormatter.wrap_for_formatter, # ProcessorFormatter で使える形式にラップ
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
         ],
         logger_factory=structlog.stdlib.LoggerFactory(),
         wrapper_class=structlog.stdlib.BoundLogger,

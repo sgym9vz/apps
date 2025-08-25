@@ -1,0 +1,25 @@
+{% extends "base_menu.html" %}
+{% load static %}
+
+{% block title %}Profile List{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <h1>Profile List</h1>
+    
+    <ul class="profile-grid">
+        {% for user in users %}
+            <li class="profile-card">
+                <a href="{% url 'user_profile_detail' pk=user.id %}">
+                    {% if user.icon %}
+                        <img src="{{ user.icon.url }}" alt="Icon">
+                    {% else %}
+                        <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon">
+                    {% endif %}
+                    <p>{{ user.username }}</p>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

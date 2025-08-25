@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Email Verification{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <div class="verification-container">
+        <div class="verification-icon">
+            ✉️
+        </div>
+        <h1 class="verification-title">Email Verification</h1>
+        <p class="verification-message">Please check your email to verify your account. We've sent a verification code to your inbox.</p>
+        <form action="{% url 'verify_email' id %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button type="submit" class="submit-button">Send</button>
+        </form>
+        <br>
+        <form action="{% url 'send_new_verification_code' id %}" method="post">
+            {% csrf_token %}
+            <p class="verification-message">Didn't receive the verification code?</p>
+            <button type="submit" class="submit-button">Get New Verification Code</button>
+        </form>
+        <br>
+        <div class="auth-footer">
+            <a href="{% url 'index' %}">Back to Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

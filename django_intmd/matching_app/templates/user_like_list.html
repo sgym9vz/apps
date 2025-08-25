@@ -1,0 +1,121 @@
+{% extends "base_menu.html" %}
+{% load static %}
+
+{% block title %}Like User Lists{% endblock %}
+
+{% block content %}
+<div class="centered-container">
+    <h1>Like User Lists</h1>
+
+    <div class="tab-buttons">
+        <button class="tab-button active" onclick="openTab('matched', event)">
+            Matches ({{ matched_users|length }})
+        </button>
+        <button class="tab-button" onclick="openTab('sent', event)">
+            Likes Sent ({{ receivers|length }})
+        </button>
+        <button class="tab-button" onclick="openTab('received', event)">
+            Likes Received ({{ senders|length }})
+        </button>
+    </div>
+
+    <div id="matched" class="tab-content active">
+        {% if matched_users %}
+            <div class="timeline-list">
+                {% for user in matched_users %}
+                    <div class="like-item">
+                        <div class="like-meta">
+                            {% if user.icon %}
+                                <img src="{{ user.icon.url }}" alt="Icon" class="like-icon">
+                            {% else %}
+                                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon" class="like-icon">
+                            {% endif %}
+                            <h3>{{ user.username }}</h3>
+                            <form action="{% url 'user_profile_detail' user.id %}" method="get" class="like-meta-form">
+                                <button type="submit" class="btn-primary">
+                                    Visit Profile
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">No matches yet</p>
+        {% endif %}
+    </div>
+
+    <div id="sent" class="tab-content">
+        {% if receivers %}
+            <div class="timeline-list">
+                {% for receiver in receivers %}
+                    <div class="like-item">
+                        <div class="like-meta">
+                            {% if receiver.icon %}
+                                <img src="{{ receiver.icon.url }}" alt="Icon" class="like-icon">
+                            {% else %}
+                                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon" class="like-icon">
+                            {% endif %}
+                            <h3>{{ receiver.username }}</h3>
+                            <form action="{% url 'user_profile_detail' receiver.id %}" method="get" class="like-meta-form">
+                                <button type="submit" class="btn-primary">
+                                    Visit Profile
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">No likes sent yet</p>
+        {% endif %}
+    </div>
+
+    <div id="received" class="tab-content">
+        {% if senders %}
+            <div class="timeline-list">
+                {% for sender in senders %}
+                    <div class="like-item">
+                        <div class="like-meta">
+                            {% if sender.icon %}
+                                <img src="{{ sender.icon.url }}" alt="Icon" class="like-icon">
+                            {% else %}
+                                <img src="{% static 'media/user_icons/default_user_icon.png' %}" alt="Icon" class="like-icon">
+                            {% endif %}
+                            <h3>{{ sender.username }}</h3>
+                            <form action="{% url 'user_profile_detail' sender.id %}" method="get" class="like-meta-form">
+                                <button type="submit" class="btn-primary">
+                                    Visit Profile
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">No likes received yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function openTab(tabName) {
+    const e = event || window.event;
+    const clickedElement = e.target;
+
+    const tabContents = document.getElementsByClassName('tab-content');
+    for (let content of tabContents) {
+        content.classList.remove('active');
+    }
+
+    const tabButtons = document.getElementsByClassName('tab-button');
+    for (let button of tabButtons) {
+        button.classList.remove('active');
+    }
+
+    document.getElementById(tabName).classList.add('active');
+
+    clickedElement.classList.add('active');
+}
+</script>
+{% endblock %}

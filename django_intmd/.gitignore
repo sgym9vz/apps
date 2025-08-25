@@ -1,0 +1,21 @@
+# VSCode
+.vscode/*
+
+# PyCharm
+.idea/*
+
+# Django
+__pycache__/
+
+# Environments
+venv/
+.venv/
+.env
+.env.development
+
+# DS_Store
+.DS_Store
+
+# Logs
+logs/
+.qodo
