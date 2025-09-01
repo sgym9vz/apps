@@ -33,16 +33,19 @@ def get_env_filename() -> Optional[str]:
 env_filename = get_env_filename()
 
 if env_filename is None:
-    env = environ.Env(APP_ENV=(str, "production"))
+    # no .env file found; fall back to safe defaults
+    APP_ENV = env.str("APP_ENV", default="production")
+    DEBUG = env.bool("DEBUG", default=False)
 else:
     environ.Env.read_env(env_filename)
-    DEBUG = env("DEBUG")
+    APP_ENV = env.str("APP_ENV", default="development")
+    DEBUG = env.bool("DEBUG", default=False)
 
-logger.info("Environment", APP_ENV=env("APP_ENV"), DEBUG=DEBUG)
+logger.info("Environment", APP_ENV=APP_ENV, DEBUG=DEBUG)
 
 SECRET_KEY: str = env("DJANGO_SECRET_KEY")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"] if ("development" in APP_ENV or DEBUG) else []
 
 
 # Application definition
@@ -94,7 +97,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env("REDIS_HOST"), env("REDIS_PORT"))],
+            "hosts": [(env.str("REDIS_HOST", default="redis"), env.int("REDIS_PORT", default=6379))],
         },
     }
 }
@@ -103,10 +106,10 @@ CHANNEL_LAYERS = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASS"),
-        "HOST": env("DB_HOST"),
+        "NAME": env.str("DB_NAME", default="app"),
+        "USER": env.str("DB_USER", default="app"),
+        "PASSWORD": env.str("DB_PASS", default="app"),
+        "HOST": env.str("DB_HOST", default="mysql"),
         "PORT": "3306",
     }
 }
@@ -189,21 +192,21 @@ LOGIN_REDIRECT_URL = "user_home"
 LOGOUT_REDIRECT_URL = "index"
 
 # Email
-if env("APP_ENV") == "production" or env("APP_ENV") == "staging":
+if APP_ENV in ("production", "staging"):
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 logger.info(f"Using email backend: {EMAIL_BACKEND}")
 
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = env("EMAIL_PORT")
-EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASS")
-EMAIL_DEFAULT_FROM = env("EMAIL_DEFAULT_FROM")
+EMAIL_HOST = env.str("EMAIL_HOST", default="")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASS", default="")
+EMAIL_DEFAULT_FROM = env.str("EMAIL_DEFAULT_FROM", default="sample@example.com")
 
 # CORS
-if env("APP_ENV") == "development":
+if APP_ENV == "development" or DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:8080",
     ]
@@ -211,7 +214,7 @@ else:
     CORS_ALLOWED_ORIGINS = []
 
 # CSRF
-if env("APP_ENV") == "development":
+if APP_ENV == "development" or DEBUG:
     CSRF_TRUSTED_ORIGINS = [
         "http://localhost:8080",
     ]
