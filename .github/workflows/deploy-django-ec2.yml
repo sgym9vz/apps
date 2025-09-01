@@ -37,18 +37,34 @@ jobs:
           set -euo pipefail
           RUNNER_IP=$(curl -s https://checkip.amazonaws.com | tr -d '\n')/32
           echo "RUNNER_IP=$RUNNER_IP"
-          SG_ID=$(aws ec2 describe-instances \
-            --filters "Name=ip-address,Values=${HOST}" \
-            --query "Reservations[0].Instances[0].SecurityGroups[0].GroupId" \
+
+          # Public IP から正確に instance-id を取得
+          INSTANCE_ID=$(aws ec2 describe-instances \
+            --filters "Name=network-interface.association.public-ip,Values=${HOST}" \
+            --query "Reservations[0].Instances[0].InstanceId" \
             --output text --region "$REGION")
-          echo "SG_ID=$SG_ID"
-          aws ec2 authorize-security-group-ingress \
-            --group-id "$SG_ID" \
-            --protocol tcp --port 22 \
-            --cidr "$RUNNER_IP" \
-            --region "$REGION" || echo "ingress already exists"
-          echo "sg_id=$SG_ID" >> "$GITHUB_OUTPUT"
+          echo "INSTANCE_ID=$INSTANCE_ID"
+
+          # インスタンスに紐づく全てのSGに22/tcpを一時開放
+          mapfile -t SG_IDS < <(aws ec2 describe-instances \
+            --instance-ids "$INSTANCE_ID" \
+            --query "Reservations[0].Instances[0].SecurityGroups[].GroupId" \
+            --output text --region "$REGION")
+
+          for SG_ID in "${SG_IDS[@]}"; do
+            echo "Authorize 22/tcp on $SG_ID for $RUNNER_IP"
+            aws ec2 authorize-security-group-ingress \
+              --group-id "$SG_ID" \
+              --protocol tcp --port 22 \
+              --cidr "$RUNNER_IP" \
+              --region "$REGION" || echo "ingress already exists on $SG_ID"
+          done
+
+          echo "sg_ids=${SG_IDS[*]}" >> "$GITHUB_OUTPUT"
           echo "runner_ip=$RUNNER_IP" >> "$GITHUB_OUTPUT"
+
+      - name: Preflight TCP 22
+        run: nc -vz ${{ secrets.EC2_HOST }} 22
 
       # SSH 経由で EC2 上のリポを更新→compose up
       - name: Deploy over SSH
@@ -58,6 +74,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
+          timeout: 30m
+          command_timeout: 30m
           script: |
             set -euo pipefail
 
@@ -131,24 +149,34 @@ jobs:
             #   ※ nginxのportsが "80:8080" になっている想定
             sudo docker compose up -d --build
 
-            # 6) ヘルスチェック簡易
-            sleep 5
-            curl -fsS http://localhost/ >/dev/null || (sudo docker compose logs --no-color --tail=100; false)
+            # 5.5) 初回migrate/collectstatic（空振りでもOK）
+            sudo docker compose exec -T django python manage.py migrate --noinput || true
+            sudo docker compose exec -T django python manage.py collectstatic --noinput || true
+
+            # 6) ヘルスチェック（最大120秒待つ）
+            for i in {1..40}; do
+              if curl -fsS http://localhost/ >/dev/null; then
+                echo "health OK"; break
+              fi
+              echo "waiting app... ($i)"; sleep 3
+            done
+            curl -fsS http://localhost/ >/dev/null || (sudo docker compose logs --no-color --tail=200; exit 1)
 
       - name: Close SSH from runner IP (cleanup)
         if: always()
         env:
           REGION: ap-northeast-1
         run: |
-          SG_ID='${{ steps.open_ssh.outputs.sg_id }}'
+          set -euo pipefail
           RUNNER_IP='${{ steps.open_ssh.outputs.runner_ip }}'
-          if [ -n "$SG_ID" ] && [ -n "$RUNNER_IP" ]; then
+          for SG_ID in ${{ steps.open_ssh.outputs.sg_ids }}; do
+            echo "Revoke 22/tcp on $SG_ID for $RUNNER_IP"
             aws ec2 revoke-security-group-ingress \
               --group-id "$SG_ID" \
               --protocol tcp --port 22 \
               --cidr "$RUNNER_IP" \
               --region "$REGION" || true
-          fi
+          done
 
       # 成功時にJobサマリーへIPを出す
       - name: Show URL
