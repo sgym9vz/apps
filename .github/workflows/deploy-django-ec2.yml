@@ -95,6 +95,35 @@ jobs:
             cd django_intmd || { echo "path not found: $(pwd)/django_intmd"; ls -la; exit 1; }
             test -f docker-compose.yml || { echo "docker-compose.yml not found in $(pwd)"; ls -la; exit 1; }
 
+            # 3.5) ディスク空き容量の確認とクリーンアップ（足りないとpull/extractで失敗する）
+            echo "== Disk before =="
+            df -h /
+            echo "== Docker usage before =="
+            sudo docker system df || true
+
+            # 低空き容量なら徹底清掃
+            AVAIL_KB=$(df -k / | awk 'NR==2{print $4}')
+            # 例: 5GB 未満ならクリーンアップ（任意閾値）
+            if [ "$AVAIL_KB" -lt 5000000 ]; then
+              echo "Low free space; pruning docker and caches..."
+              sudo docker system prune -af --volumes || true
+              sudo docker image prune -af || true
+              sudo journalctl --vacuum-time=3d || true
+              sudo dnf clean all || true
+              sudo rm -rf /var/cache/dnf || true
+              echo "== Disk after prune =="
+              df -h /
+              echo "== Docker usage after =="
+              sudo docker system df || true
+
+              # まだ 3GB 未満なら明示的に失敗（EBS拡張が必要）
+              AVAIL_KB2=$(df -k / | awk 'NR==2{print $4}')
+              if [ "$AVAIL_KB2" -lt 3000000 ]; then
+                echo "ERROR: Free space still too low (<3GB). Consider increasing root volume size." >&2
+                exit 1
+              fi
+            fi
+
             # 4) 既存で80番を掴むコンテナを止める（初回のnginx対策）
             sudo docker ps -q --filter 'publish=80' | xargs -r sudo docker rm -f || true
 
