@@ -84,18 +84,19 @@ jobs:
 
             # 2) リポジトリを用意（まだ無ければclone）
             mkdir -p ~/apps && cd ~/apps
-            if [ ! -d infra ]; then
-              git clone https://github.com/sgym9vz/infra.git
+            if [ ! -d apps ]; then
+              git clone https://github.com/sgym9vz/apps.git
             fi
-            cd infra
+            cd apps
             git fetch --all
             git reset --hard origin/main
 
-            # 3) アプリディレクトリへ
-            cd apps/django_intmd
+            # 3) アプリディレクトリへ（repo直下の django_intmd に docker-compose.yml がある想定）
+            cd django_intmd || { echo "path not found: $(pwd)/django_intmd"; ls -la; exit 1; }
+            test -f docker-compose.yml || { echo "docker-compose.yml not found in $(pwd)"; ls -la; exit 1; }
 
             # 4) 既存で80番を掴むコンテナを止める（初回のnginx対策）
-            docker ps -q --filter 'publish=80' | xargs -r docker rm -f || true
+            sudo docker ps -q --filter 'publish=80' | xargs -r sudo docker rm -f || true
 
             # 5) compose ビルド＆起動
             #   ※ nginxのportsが "80:8080" になっている想定
@@ -103,7 +104,7 @@ jobs:
 
             # 6) ヘルスチェック簡易
             sleep 5
-            curl -fsS http://localhost/ >/dev/null || (docker compose logs --no-color --tail=100; false)
+            curl -fsS http://localhost/ >/dev/null || (sudo docker compose logs --no-color --tail=100; false)
 
       - name: Close SSH from runner IP (cleanup)
         if: always()
