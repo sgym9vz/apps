@@ -8,6 +8,10 @@ on:
       - 'apps/django_intmd/**'
       - '.github/workflows/deploy-django-ec2.yml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,6 +24,9 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::585008043652:role/github-actions-deploy-role
           aws-region: ap-northeast-1
+
+      - name: Who am I (verify AWS creds)
+        run: aws sts get-caller-identity
 
       - name: Open SSH from runner IP (temp)
         id: open_ssh
