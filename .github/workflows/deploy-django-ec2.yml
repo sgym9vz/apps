@@ -77,6 +77,11 @@ jobs:
               docker compose version
             fi
 
+            # git が無ければ導入（AL2023 最小AMIは入っていない）
+            if ! command -v git &>/dev/null; then
+              sudo dnf -y install git
+            fi
+
             # 2) リポジトリを用意（まだ無ければclone）
             mkdir -p ~/apps && cd ~/apps
             if [ ! -d infra ]; then
